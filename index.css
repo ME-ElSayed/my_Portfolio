@@ -1,0 +1,1426 @@
+/* ============ RESET & TOKENS ============ */
+:root {
+  --flutter-blue: #027dfd;
+  --flutter-blue-2: #4da3ff;
+  --navy: #0b1220;
+  --white: #ffffff;
+  --bg: #f7faff;
+  --ink: #0b1220;
+  --ink-soft: #4a5568;
+  --line: rgba(11, 18, 32, 0.09);
+
+  --ev-1: #6c4dff;
+  --ev-2: #8a6cff;
+  --hc-1: #e31b23;
+  --hc-2: #ff4d57;
+  --ch-1: #1677ff;
+  --ch-2: #4db6ff;
+  --db-1: #0b1f4b;
+  --db-2: #1e88ff;
+
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+}
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--ink);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+img {
+  max-width: 100%;
+  display: block;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+button {
+  font: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: inherit;
+}
+ul {
+  list-style: none;
+}
+section {
+  position: relative;
+}
+::selection {
+  background: var(--flutter-blue);
+  color: #fff;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+a:focus-visible,
+button:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid var(--flutter-blue);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.wrap {
+  max-width: 1220px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+.eyebrow-num {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 17px;
+  color: var(--flutter-blue);
+  letter-spacing: 0.02em;
+}
+
+.section-heading {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(42px, 5.5vw, 72px);
+  line-height: 1.05;
+  color: var(--navy);
+  max-width: 14ch;
+}
+
+.section-lede {
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--ink-soft);
+  max-width: 56ch;
+  margin-top: 18px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 28px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 15px;
+  transition:
+    transform 0.35s var(--ease),
+    box-shadow 0.35s var(--ease),
+    background 0.3s;
+}
+.btn-primary {
+  background: var(--flutter-blue);
+  color: #fff;
+  box-shadow: 0 10px 30px -8px rgba(2, 125, 253, 0.55);
+}
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 36px -8px rgba(2, 125, 253, 0.65);
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--navy);
+  border: 1.5px solid var(--line);
+}
+.btn-ghost:hover {
+  border-color: var(--flutter-blue);
+  color: var(--flutter-blue);
+  transform: translateY(-3px);
+}
+.btn svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ============ CUSTOM CURSOR ============ */
+#cursor-dot,
+#cursor-label {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  will-change: transform;
+}
+#cursor-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--flutter-blue);
+  transition:
+    width 0.25s var(--ease),
+    height 0.25s var(--ease),
+    background 0.25s var(--ease);
+}
+#cursor-dot.hover {
+  width: 46px;
+  height: 46px;
+  background: rgba(2, 125, 253, 0.12);
+  border: 1.5px solid var(--flutter-blue);
+}
+#cursor-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--flutter-blue);
+  opacity: 0;
+  transition: opacity 0.2s;
+  white-space: nowrap;
+}
+#cursor-label.show {
+  opacity: 1;
+}
+@media (hover: none), (pointer: coarse) {
+  #cursor-dot,
+  #cursor-label {
+    display: none;
+  }
+}
+
+/* ============ SCROLL PROGRESS ============ */
+#progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 0%;
+  background: linear-gradient(
+    90deg,
+    var(--flutter-blue),
+    var(--flutter-blue-2)
+  );
+  z-index: 2001;
+}
+
+/* ============ NAV ============ */
+#navbar {
+  position: fixed;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(16px) saturate(1.4);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  border: 1px solid rgba(11, 18, 32, 0.06);
+  border-radius: 999px;
+  box-shadow: 0 8px 30px -12px rgba(11, 18, 32, 0.18);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.5s var(--ease),
+    box-shadow 0.3s;
+}
+#navbar.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px 8px 10px;
+  font-weight: 800;
+  font-size: 14px;
+  color: var(--navy);
+  border-right: 1px solid var(--line);
+  margin-right: 4px;
+}
+.nav-logo svg,
+.nav-logo img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.nav-links button {
+  padding: 9px 14px;
+  border-radius: 999px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ink-soft);
+  transition:
+    color 0.25s,
+    background 0.25s;
+  position: relative;
+}
+.nav-links button:hover {
+  color: var(--navy);
+}
+.nav-links button.active {
+  color: #fff;
+  background: var(--navy);
+}
+.nav-toggle {
+  display: none;
+}
+
+@media (max-width: 880px) {
+  #navbar {
+    top: 14px;
+    left: 16px;
+    right: 16px;
+    transform: none;
+    width: auto;
+    justify-content: space-between;
+  }
+  .nav-links {
+    position: fixed;
+    top: 70px;
+    left: 16px;
+    right: 16px;
+    background: #fff;
+    border-radius: 20px;
+    padding: 14px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 2px;
+    box-shadow: 0 20px 50px -20px rgba(11, 18, 32, 0.35);
+    display: none;
+  }
+  .nav-links.open {
+    display: flex;
+  }
+  .nav-links button {
+    text-align: left;
+    padding: 13px 16px;
+  }
+  .nav-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    margin-right: 4px;
+  }
+  .nav-toggle svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* ============ INTRO ============ */
+#intro-fight {
+  position: relative;
+  height: 100vh;
+  min-height: 640px;
+  width: 100%;
+  background: var(--white);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#intro-particles {
+  position: absolute;
+  inset: 0;
+}
+#intro-particles span {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--flutter-blue-2);
+  opacity: 0;
+}
+.intro-stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.combatant {
+  position: absolute;
+  top: 50%;
+  width: min(38vw, 300px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+#android-side {
+  left: 8%;
+}
+#ios-side {
+  right: 8%;
+}
+.combatant .figure {
+  width: 100%;
+  aspect-ratio: 1;
+}
+.combatant .figure img,
+.combatant .figure svg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+.combatant .name-tag {
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: 0.03em;
+  color: var(--ink-soft);
+}
+.speech {
+  position: absolute;
+  top: -58px;
+  padding: 10px 18px;
+  border-radius: 16px;
+  background: var(--navy);
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+  opacity: 0;
+  white-space: nowrap;
+}
+.speech::after {
+  content: "";
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  width: 12px;
+  height: 12px;
+  background: var(--navy);
+}
+
+#bird-wrap {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(28vw, 220px);
+  opacity: 0;
+  z-index: 5;
+}
+#bird-wrap svg,
+#bird-wrap img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.intro-line {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, 20px);
+  text-align: center;
+  opacity: 0;
+  z-index: 6;
+  width: 90%;
+}
+.intro-line p {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(18px, 2.6vw, 26px);
+  color: var(--navy);
+}
+
+#solution-statement {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 24px;
+  background:
+    radial-gradient(
+      700px 420px at 50% 10%,
+      rgba(2, 125, 253, 0.1),
+      transparent 70%
+    ),
+    var(--white);
+}
+.solution-inner {
+  width: min(1100px, 100%);
+  text-align: center;
+}
+.solution-kicker {
+  color: var(--flutter-blue);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+}
+.solution-line {
+  opacity: 0;
+  transform: translateY(34px) scale(0.96);
+  font-family: var(--font-body);
+  font-size: clamp(34px, 7vw, 96px);
+  font-weight: 900;
+  line-height: 0.98;
+  letter-spacing: 0;
+}
+.solution-line + .solution-line {
+  margin-top: 10px;
+}
+#solution-platforms {
+  color: var(--flutter-blue);
+}
+.solution-support {
+  opacity: 0;
+  transform: translateY(18px);
+  margin: 30px auto 0;
+  max-width: 40ch;
+  color: var(--ink-soft);
+  font-size: clamp(14px, 1.8vw, 20px);
+  line-height: 1.5;
+}
+
+#skip-intro {
+  position: absolute;
+  bottom: 28px;
+  right: 28px;
+  z-index: 20;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-soft);
+  padding: 9px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(8px);
+}
+#skip-intro:hover {
+  color: var(--flutter-blue);
+  border-color: var(--flutter-blue);
+}
+
+@media (max-width: 720px) {
+  #android-side {
+    left: 4%;
+    width: 34vw;
+  }
+  #ios-side {
+    right: 4%;
+    width: 34vw;
+  }
+  .speech {
+    font-size: 11px;
+    padding: 7px 12px;
+    top: -46px;
+    white-space: normal;
+    width: 110px;
+  }
+}
+
+/* ============ HERO ============ */
+#solution-statement {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 90px 0;
+  background:
+    radial-gradient(
+      1000px 500px at 85% -10%,
+      rgba(2, 125, 253, 0.08),
+      transparent 60%
+    ),
+    var(--white);
+}
+#solution-statement .wrap {
+  width: 100%;
+}
+.solution-actions {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 34px;
+}
+.about-name {
+  margin-top: 18px;
+  color: var(--navy);
+  font-family: var(--font-display);
+  font-size: clamp(24px, 3vw, 38px);
+  font-weight: 600;
+}
+.about-role {
+  margin-top: 4px;
+  color: var(--flutter-blue);
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+/* ============ ABOUT ============ */
+#about {
+  padding: 130px 0 100px;
+  background: var(--bg);
+}
+.about-grid {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 70px;
+  align-items: center;
+}
+.wing-reveal {
+  position: relative;
+}
+.about-portrait {
+  width: 100%;
+  max-height: 520px;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: 28px;
+  overflow: hidden;
+  display: block;
+}
+
+.about-copy p {
+  font-size: 17px;
+  line-height: 1.75;
+  color: var(--ink-soft);
+  margin-bottom: 18px;
+}
+.about-copy p:first-of-type {
+  color: var(--navy);
+  font-size: 19px;
+}
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 26px;
+}
+.tag {
+  padding: 9px 16px;
+  border-radius: 999px;
+  background: #fff;
+  border: 1px solid var(--line);
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--navy);
+}
+
+@media (max-width: 900px) {
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
+
+/* ============ EDUCATION ============ */
+#education {
+  padding: 100px 0;
+  background: var(--white);
+}
+.edu-timeline {
+  margin-top: 56px;
+  position: relative;
+  padding-left: 40px;
+}
+.edu-timeline::before {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 6px;
+  bottom: 6px;
+  width: 2px;
+  background: var(--line);
+}
+.edu-item {
+  position: relative;
+  padding-bottom: 34px;
+}
+.edu-item::before {
+  content: "";
+  position: absolute;
+  left: -40px;
+  top: 4px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--flutter-blue);
+  box-shadow: 0 0 0 5px rgba(2, 125, 253, 0.15);
+}
+.edu-item .edu-period {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--flutter-blue);
+}
+.edu-item h3 {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 600;
+  margin: 6px 0 4px;
+  color: var(--navy);
+}
+.edu-item .edu-place {
+  font-size: 14.5px;
+  color: var(--ink-soft);
+  margin-bottom: 12px;
+}
+.edu-focus {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.edu-focus span {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--navy);
+  background: var(--bg);
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+}
+.edu-certs {
+  margin-top: 42px;
+}
+.edu-cert-grid {
+  display: flex;
+  gap: 18px;
+  overflow-x: auto;
+  padding-bottom: 14px;
+  scroll-snap-type: x proximity;
+}
+.edu-cert-card {
+  flex: 0 0 auto;
+  width: 290px;
+  scroll-snap-align: start;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 28px;
+  transition:
+    transform 0.4s var(--ease),
+    box-shadow 0.4s var(--ease);
+}
+.edu-cert-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 22px 44px -18px rgba(11, 18, 32, 0.2);
+}
+.edu-cert-card .edu-cert-icon {
+  width: 36px;
+  height: 36px;
+  color: var(--flutter-blue);
+  margin-bottom: 18px;
+}
+.edu-cert-card h4 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.4;
+  margin-bottom: 10px;
+}
+.edu-cert-card .edu-cert-meta {
+  font-size: 13px;
+  color: var(--ink-soft);
+  display: flex;
+  justify-content: space-between;
+}
+
+/* ============ SKILLS ============ */
+#skills {
+  padding: 110px 0;
+  background: var(--bg);
+}
+.skills-header {
+  margin-bottom: 50px;
+}
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.skill-card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 26px;
+  transition:
+    transform 0.4s var(--ease),
+    box-shadow 0.4s var(--ease),
+    border-color 0.4s;
+}
+.skill-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 22px 44px -18px rgba(11, 18, 32, 0.22);
+  border-color: rgba(2, 125, 253, 0.35);
+}
+.skill-card h3 {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 16px;
+}
+.skill-nodes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.skill-node {
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 13px;
+  border-radius: 10px;
+  background: var(--bg);
+  color: var(--ink-soft);
+  transition:
+    background 0.3s,
+    color 0.3s,
+    transform 0.3s;
+}
+.skill-node:hover {
+  background: var(--flutter-blue);
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 860px) {
+  .skills-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 560px) {
+  .skills-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============ CAPABILITY / EXPERIENCE ============ */
+#experience {
+  padding: 100px 0;
+  background: var(--white);
+}
+.cap-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-top: 50px;
+}
+.cap-card {
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 24px;
+  background: var(--bg);
+}
+.cap-card .cap-icon {
+  width: 34px;
+  height: 34px;
+  color: var(--flutter-blue);
+  margin-bottom: 14px;
+}
+.cap-card h4 {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 6px;
+}
+.cap-card p {
+  font-size: 13.5px;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+@media (max-width: 900px) {
+  .cap-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 520px) {
+  .cap-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============ SERVICES ============ */
+#services {
+  padding: 110px 0;
+  background: var(--bg);
+}
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 50px;
+}
+.service-card {
+  position: relative;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  padding: 32px 28px;
+  overflow: hidden;
+  transition:
+    transform 0.45s var(--ease),
+    box-shadow 0.45s var(--ease);
+}
+.service-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 26px 50px -20px rgba(11, 18, 32, 0.22);
+}
+.service-card .num {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--flutter-blue);
+}
+.service-card h3 {
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 14px 0 10px;
+}
+.service-card p {
+  font-size: 14.5px;
+  color: var(--ink-soft);
+  line-height: 1.6;
+}
+.service-card::after {
+  content: "";
+  position: absolute;
+  right: -30px;
+  bottom: -30px;
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(2, 125, 253, 0.14), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.service-card:hover::after {
+  opacity: 1;
+}
+@media (max-width: 900px) {
+  .services-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 560px) {
+  .services-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============ PROJECTS ============ */
+#projects {
+  background: var(--navy);
+  position: relative;
+  padding: 96px 0 56px;
+}
+.projects-intro {
+  padding: 0 0 20px;
+}
+.projects-intro .section-heading,
+.projects-intro .eyebrow-num {
+  color: #fff;
+}
+.projects-intro .section-lede {
+  color: rgba(255, 255, 255, 0.6);
+}
+.scroll-hint {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 26px;
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.55);
+}
+.scroll-hint svg {
+  width: 22px;
+  height: 14px;
+  animation: hintSlide 1.6s ease-in-out infinite;
+}
+@keyframes hintSlide {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(8px);
+  }
+}
+
+#project-track {
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 34px 3vw 44px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
+}
+#project-track::-webkit-scrollbar {
+  height: 6px;
+}
+#project-track::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 10px;
+}
+
+.project-panel {
+  flex: 0 0 auto;
+  width: min(94vw, 1480px);
+  scroll-snap-align: center;
+  margin-right: 24px;
+  border-radius: 36px;
+  overflow: hidden;
+  position: relative;
+  min-height: clamp(580px, 72vh, 760px);
+  display: flex;
+  align-items: flex-end;
+  padding: clamp(42px, 6vw, 96px);
+  color: #fff;
+  background-size: cover;
+  background-position: center;
+  background-color: #3c218e;
+}
+.project-panel .p-scene {
+  position: absolute;
+  inset: 4% 2% 5% 45%;
+  z-index: 0;
+  width: 53%;
+  height: 91%;
+  object-fit: contain;
+  object-position: center;
+  opacity: 1;
+  filter: drop-shadow(0 30px 36px rgba(17, 5, 54, 0.3));
+  transform: rotate(1.5deg);
+}
+.project-panel .p-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    90deg,
+    rgba(var(--panel-rgb), 0.98) 0%,
+    rgba(var(--panel-rgb), 0.96) 38%,
+    rgba(var(--panel-rgb), 0.34) 68%,
+    rgba(var(--panel-rgb), 0.02) 100%
+  );
+}
+.project-panel.has-preview .p-scrim {
+  background: linear-gradient(
+    90deg,
+    rgba(var(--panel-rgb), 0.98) 0%,
+    rgba(var(--panel-rgb), 0.96) 38%,
+    rgba(var(--panel-rgb), 0.34) 68%,
+    rgba(var(--panel-rgb), 0.02) 100%
+  );
+}
+.project-panel .p-content {
+  position: relative;
+  z-index: 2;
+  width: 44%;
+  max-width: 650px;
+}
+.project-panel .p-num {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  opacity: 0.72;
+}
+.project-panel .p-category {
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  opacity: 0.7;
+  margin-top: 7px;
+}
+.project-panel h3 {
+  font-family: var(--font-body);
+  font-size: clamp(54px, 7vw, 104px);
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: 0.95;
+  margin: 18px 0 24px;
+}
+.project-panel .p-desc {
+  font-size: clamp(15px, 1.35vw, 20px);
+  line-height: 1.55;
+  max-width: 48ch;
+  color: rgba(255, 255, 255, 0.78);
+}
+.p-features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin: 26px 0 22px;
+  max-width: 54ch;
+}
+.p-features span {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 8px 13px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+.p-stack {
+  font-size: 13px;
+  opacity: 0.68;
+  margin-bottom: 0;
+}
+.p-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.p-actions .btn-primary {
+  background: #fff;
+  color: var(--navy);
+  box-shadow: none;
+}
+.p-actions .btn-primary:hover {
+  transform: translateY(-3px);
+}
+.p-actions .btn-ghost {
+  border-color: rgba(255, 255, 255, 0.35);
+  color: #fff;
+}
+.p-actions .btn-ghost:hover {
+  border-color: #fff;
+  color: #fff;
+}
+.p-note {
+  font-size: 12.5px;
+  opacity: 0.6;
+  margin-top: 14px;
+}
+
+@media (max-width: 760px) {
+  .project-panel {
+    width: calc(100vw - 32px);
+    min-height: 700px;
+    padding: 28px;
+    align-items: flex-end;
+  }
+  .project-panel .p-scene {
+    inset: 2% 2% 43% 2%;
+    width: 100%;
+    height: 55%;
+    object-fit: contain;
+    object-position: center top;
+  }
+  .project-panel .p-scrim {
+    background: linear-gradient(
+      180deg,
+      rgba(var(--panel-rgb), 0.02) 0%,
+      rgba(var(--panel-rgb), 0.12) 36%,
+      rgba(var(--panel-rgb), 0.96) 61%,
+      rgba(var(--panel-rgb), 1) 100%
+    );
+  }
+  .project-panel .p-content {
+    width: 100%;
+    max-width: none;
+  }
+  .project-panel h3 {
+    font-size: 52px;
+  }
+  .project-panel .p-desc {
+    font-size: 14px;
+  }
+}
+
+/* device mockup */
+.device {
+  position: absolute;
+  z-index: 1;
+  width: 150px;
+  aspect-ratio: 9/19;
+  border-radius: 22px;
+  background: #111;
+  padding: 8px;
+  box-shadow: 0 30px 60px -18px rgba(0, 0, 0, 0.5);
+}
+.device .screen {
+  width: 100%;
+  height: 100%;
+  border-radius: 15px;
+  overflow: hidden;
+}
+.device.d1 {
+  top: 70px;
+  right: 60px;
+  transform: rotate(-6deg);
+}
+.device.d2 {
+  top: 180px;
+  right: 220px;
+  transform: rotate(4deg) scale(0.85);
+  display: none;
+}
+@media (min-width: 760px) {
+  .device.d2 {
+    display: block;
+  }
+}
+@media (max-width: 760px) {
+  .device.d1 {
+    right: 24px;
+    top: 50px;
+    width: 110px;
+  }
+}
+
+.secondary-projects {
+  padding: 70px 0 90px;
+}
+.secondary-projects .wrap > p {
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 18px;
+}
+.secondary-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+.secondary-card {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  padding: 22px;
+  background: rgba(255, 255, 255, 0.04);
+}
+.secondary-card h4 {
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.secondary-card p {
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 13px;
+  line-height: 1.6;
+}
+@media (max-width: 600px) {
+  .secondary-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============ TESTIMONIALS ============ */
+#testimonials {
+  padding: 80px 0;
+  background: var(--white);
+  text-align: center;
+}
+.empty-state {
+  border: 1.5px dashed var(--line);
+  border-radius: 24px;
+  padding: 60px 30px;
+  margin-top: 40px;
+}
+.empty-state p {
+  color: var(--ink-soft);
+  font-size: 15px;
+}
+
+/* ============ CONTACT ============ */
+#contact {
+  padding: 130px 0 100px;
+  background: var(--navy);
+  color: #fff;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+#contact::before {
+  content: "";
+  position: absolute;
+  top: -30%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 900px;
+  height: 900px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(2, 125, 253, 0.22), transparent 65%);
+}
+#contact .inner {
+  position: relative;
+  z-index: 1;
+  max-width: 680px;
+  margin: 0 auto;
+}
+#contact h2 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(34px, 5.5vw, 60px);
+}
+#contact p.lede {
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 17px;
+  margin-top: 18px;
+}
+.contact-actions {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 38px;
+  flex-wrap: wrap;
+}
+#contact .btn-primary {
+  background: var(--flutter-blue);
+}
+#contact .btn-ghost {
+  border-color: rgba(255, 255, 255, 0.25);
+  color: #fff;
+}
+#contact .btn-ghost:hover {
+  border-color: #fff;
+}
+.contact-direct {
+  margin-top: 44px;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+.contact-direct a {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.contact-direct a:hover {
+  color: #fff;
+}
+.contact-direct svg {
+  width: 17px;
+  height: 17px;
+}
+
+/* ============ OUTRO ============ */
+#outro {
+  min-height: 70vh;
+  background: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 80px 0;
+  position: relative;
+  overflow: hidden;
+}
+#outro-bird {
+  width: 140px;
+  margin: 0 auto 30px;
+  opacity: 0;
+}
+#outro-bird svg,
+#outro-bird img {
+  width: 100%;
+  display: block;
+}
+#outro p.line1 {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 20px;
+  color: var(--ink-soft);
+  opacity: 0;
+}
+#outro p.line2 {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--flutter-blue);
+  margin-top: 10px;
+  opacity: 0;
+  letter-spacing: 0.02em;
+}
+#outro .final-name {
+  margin-top: 26px;
+  opacity: 0;
+}
+#outro .final-name .n {
+  font-family: var(--font-display);
+  font-size: clamp(24px, 3.4vw, 34px);
+  font-weight: 600;
+  color: var(--navy);
+}
+#outro .final-name .r {
+  font-size: 14px;
+  color: var(--ink-soft);
+  margin-top: 4px;
+}
+
+/* ============ FOOTER ============ */
+footer {
+  padding: 36px 0;
+  background: var(--white);
+  border-top: 1px solid var(--line);
+}
+footer .wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+footer p {
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+footer .foot-links {
+  display: flex;
+  gap: 20px;
+}
+footer .foot-links a {
+  font-size: 13px;
+  color: var(--ink-soft);
+  font-weight: 600;
+}
+footer .foot-links a:hover {
+  color: var(--flutter-blue);
+}
+
+/* reveal utility */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+}
+.reveal.in {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 0.8s var(--ease),
+    transform 0.8s var(--ease);
+}
