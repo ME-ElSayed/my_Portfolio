@@ -951,6 +951,11 @@ button:focus-visible,
 .projects-intro .section-lede {
   color: rgba(255, 255, 255, 0.6);
 }
+@media (max-width: 760px) {
+  .projects-intro {
+    padding: 0 16px 20px;
+  }
+}
 .scroll-hint {
   display: flex;
   align-items: center;
