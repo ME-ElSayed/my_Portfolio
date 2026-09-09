@@ -529,6 +529,18 @@ button:focus-visible,
 }
 
 @media (max-width: 720px) {
+  #intro-fight {
+    height: 100svh;
+    min-height: 0;
+  }
+
+  #skip-intro {
+    display: block;
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
+  }
+
   #android-side {
     left: 4%;
     width: 34vw;
