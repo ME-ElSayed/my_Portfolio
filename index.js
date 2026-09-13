@@ -71,6 +71,25 @@
   var navbar = document.getElementById("navbar");
   var navToggle = document.getElementById("navToggle");
   var navLinks = document.getElementById("navLinks");
+  var themeToggle = document.getElementById("themeToggle");
+
+  function updateThemeToggle(theme) {
+    var darkMode = theme === "dark";
+    var nextLabel = darkMode ? "Switch to light mode" : "Switch to dark mode";
+    themeToggle.setAttribute("aria-label", nextLabel);
+    themeToggle.setAttribute("title", nextLabel);
+  }
+
+  updateThemeToggle(document.documentElement.dataset.theme);
+  themeToggle.addEventListener("click", function () {
+    var nextTheme =
+      document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+    document.documentElement.dataset.theme = nextTheme;
+    try {
+      localStorage.setItem("portfolio-theme", nextTheme);
+    } catch (error) {}
+    updateThemeToggle(nextTheme);
+  });
   navToggle.addEventListener("click", function () {
     var open = navLinks.classList.toggle("open");
     navToggle.setAttribute("aria-expanded", open);
